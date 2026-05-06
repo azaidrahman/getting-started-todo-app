@@ -21,7 +21,7 @@ function PriorityBadge({ priority }) {
         <span className={`badge bg-${config.variant}`}>{config.label}</span>
     );
 }
-export default function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
+export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
     const toggleCompletion = () => {
         fetch(`/api/items/${item.id}`, {
             method: 'PUT',
