@@ -63,11 +63,10 @@ export default function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                             className={`far ${item.completed ? 'fa-check-square' : 'fa-square'
                                 }`}
                         />
-                        <span className={`badge badge-priority-${priority} me-2`}>
-                        </span>
                     </Button>
                 </Col>
                 <Col xs={8} className="name">
+                    <PriorityBadge priority={item.priority} />
                     {item.name}
                 </Col>
                 <Col xs={2} className="text-center remove">

@@ -39,7 +39,7 @@ async function init() {
 
     return new Promise((acc, rej) => {
         pool.query(
-            "CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean), priority varchar(10) DEFAULT 'medium'",
+            "CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean, priority varchar(10) DEFAULT 'medium')",
             (err) => {
                 if (err) return rej(err);
 

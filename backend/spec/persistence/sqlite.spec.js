@@ -6,6 +6,7 @@ const ITEM = {
     id: '7aef3d7c-d301-4846-8358-2a91ec9d6be3',
     name: 'Test',
     completed: false,
+    priority: 'medium',
 };
 
 beforeEach(() => {
@@ -62,4 +63,14 @@ test('it can get a single item', async () => {
 
     const item = await db.getItem(ITEM.id);
     expect(item).toEqual(ITEM);
+});
+
+test('it stores and retrieves the priority field', async () => {
+    await db.init();
+
+    const item = { ...ITEM, priority: 'high' };
+    await db.storeItem(item);
+
+    const items = await db.getItems();
+    expect(items[0].priority).toBe('high');
 });
