@@ -8,19 +8,31 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import faCheckSquare from '@fortawesome/fontawesome-free-regular/faCheckSquare';
 import faSquare from '@fortawesome/fontawesome-free-regular/faSquare';
 import './ItemDisplay.scss';
+import React from 'react';
 
-export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
+const PRIORITY_COLORS = {
+    low: { variant: 'success', label: 'Low' },
+    medium: { variant: 'warning', label: 'Medium' },
+    high: { variant: 'danger', label: 'High' },
+};
+function PriorityBadge({ priority }) {
+    const config = PRIORITY_COLORS[priority] ?? PRIORITY_COLORS.medium;
+    return (
+        <span className={`badge bg-${config.variant}`}>{config.label}</span>
+    );
+}
+export default function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
     const toggleCompletion = () => {
         fetch(`/api/items/${item.id}`, {
             method: 'PUT',
             body: JSON.stringify({
-                name: item.name,
+                ...item,
                 completed: !item.completed,
             }),
             headers: { 'Content-Type': 'application/json' },
         })
-            .then((r) => r.json())
-            .then(onItemUpdate);
+            .then(r => r.json())
+            .then(updatedItem => onItemUpdate(updatedItem));
     };
 
     const removeItem = () => {
@@ -48,10 +60,11 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                             icon={item.completed ? faCheckSquare : faSquare}
                         />
                         <i
-                            className={`far ${
-                                item.completed ? 'fa-check-square' : 'fa-square'
-                            }`}
+                            className={`far ${item.completed ? 'fa-check-square' : 'fa-square'
+                                }`}
                         />
+                        <span className={`badge badge-priority-${priority} me-2`}>
+                        </span>
                     </Button>
                 </Col>
                 <Col xs={8} className="name">
