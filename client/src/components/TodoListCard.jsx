@@ -63,17 +63,16 @@ export function TodoListCard() {
 
         // Step 2: Sort 
         result.sort((a, b) => {
-            // If the user selected "created" sort (default)...
-            if (sort === 'created') {
-                // Items from the DB come back in insertion order (roughly by creation time)
-                // Use the index in the original `items` array to preserve that order
-                return items.indexOf(a) - items.indexOf(b);
+            // If the user selected "category"
+            if (sort === 'category') {
+                const rank = { personal: 1, shopping: 2, work: 3 };
+                // Get the rank for each item; 4 if category is missing
+                return (rank[a.category] || 4) - (rank[b.category] || 4);
             }
             // If the user selected "priority" sort
             if (sort === 'priority') {
-                // Define a numeric ranking for each priority level (lower number = higher priority)
+                // set number 1 for top priority and lower number for low priority
                 const rank = { high: 1, med: 2, low: 3 };
-
                 return (rank[a.priority] || 4) - (rank[b.priority] || 4);
             }
             // If the user selected "due" sort
