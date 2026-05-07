@@ -8,6 +8,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import faCheckSquare from '@fortawesome/fontawesome-free-regular/faCheckSquare';
 import faSquare from '@fortawesome/fontawesome-free-regular/faSquare';
 import './ItemDisplay.scss';
+import Badge from 'react-bootstrap/Badge';
 
 export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
     const toggleCompletion = () => {
@@ -55,7 +56,10 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                     </Button>
                 </Col>
                 <Col xs={8} className="name">
-                    {item.name}
+                    <div>{item.name}</div>
+                    <Badge bg="secondary" className="category-badge text-uppercase">
+                        {item.category}
+                    </Badge>
                 </Col>
                 <Col xs={2} className="text-center remove">
                     <Button
@@ -80,6 +84,7 @@ ItemDisplay.propTypes = {
         id: PropTypes.string,
         name: PropTypes.string,
         completed: PropTypes.bool,
+        category: PropTypes.string,
     }),
     onItemUpdate: PropTypes.func,
     onItemRemoval: PropTypes.func,
