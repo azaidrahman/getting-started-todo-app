@@ -65,7 +65,7 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                         />
                     </Button>
                 </Col>
-                <Col xs={8} className="name">
+                <Col xs={8} className="name d-flex align-items-center gap-2">
                     <PriorityBadge priority={item.priority} />
                     {item.name}
                 </Col>
