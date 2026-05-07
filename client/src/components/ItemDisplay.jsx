@@ -17,6 +17,7 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
             body: JSON.stringify({
                 name: item.name,
                 completed: !item.completed,
+                category: item.category,
             }),
             headers: { 'Content-Type': 'application/json' },
         })
