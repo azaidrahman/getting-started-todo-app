@@ -6,6 +6,7 @@ export function AddItemForm({ onNewItem }) {
     const [newItem, setNewItem] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [priority, setPriority] = useState('medium');
+    const [dueDate, setDueDate] = useState('');
 
     const submitNewItem = (e) => {
         e.preventDefault();
@@ -13,7 +14,7 @@ export function AddItemForm({ onNewItem }) {
 
         const options = {
             method: 'POST',
-            body: JSON.stringify({ name: newItem, priority }),
+            body: JSON.stringify({ name: newItem, priority, due_date: dueDate || null }),//due date included
             headers: { 'Content-Type': 'application/json' },
         };
 
@@ -24,6 +25,7 @@ export function AddItemForm({ onNewItem }) {
                 setSubmitting(false);
                 setNewItem('');
                 setPriority('medium');
+                setDueDate(''); //duedate included
             });
     };
 
@@ -48,6 +50,15 @@ export function AddItemForm({ onNewItem }) {
                 onChange={e => setNewItem(e.target.value)}
                 onKeyUp={e => { if (e.key === 'Enter') submitNewItem(); }}
             />
+            //add due date
+            <Form.Control
+                type='date'
+                value={dueDate}
+                onChange={e => setDueDate(e.target.value)}
+                aria-label='Due Date'
+                style={{ maxWidth: '140px' }}
+            />
+
             <Button
                 variant="success"
                 disabled={!newItem.length}

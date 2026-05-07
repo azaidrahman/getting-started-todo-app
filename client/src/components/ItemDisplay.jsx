@@ -21,6 +21,22 @@ function PriorityBadge({ priority }) {
         <span className={`badge bg-${config.variant}`}>{config.label}</span>
     );
 }
+
+//shows due date
+function DueDateDisplay({ dueDate, completed }) {
+    if (!dueDate) return null;
+    const today = new Date().toISOString().slice(0, 10);
+    const isOverdue = !completed && dueDate < today;
+    return (
+        <span className="due-date ms-2">
+            <small className="text-muted">Due: {dueDate}</small>
+            {isOverdue && (
+                <span className='badge bg-danger ms-1'>Overdue</span>
+            )}
+        </span>
+    );
+
+}
 export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
     const toggleCompletion = () => {
         fetch(`/api/items/${item.id}`, {
@@ -41,8 +57,10 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
         );
     };
 
+    const today = new Date().toISOString().slice(0, 10);
+    const isOverdue = item.due_date && !item.completed && item.due_date < today;
     return (
-        <Container fluid className={`item ${item.completed && 'completed'}`}>
+        <Container fluid className={`item ${item.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''}`}>
             <Row>
                 <Col xs={2} className="text-center">
                     <Button
@@ -68,6 +86,8 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                 <Col xs={8} className="name">
                     <PriorityBadge priority={item.priority} />
                     {item.name}
+                    <DueDateDisplay dueDate={item.due_date}
+                        completed={item.completed} />
                 </Col>
                 <Col xs={2} className="text-center remove">
                     <Button
@@ -92,6 +112,7 @@ ItemDisplay.propTypes = {
         id: PropTypes.string,
         name: PropTypes.string,
         completed: PropTypes.bool,
+        due_date: PropTypes.string, //add this too
     }),
     onItemUpdate: PropTypes.func,
     onItemRemoval: PropTypes.func,
