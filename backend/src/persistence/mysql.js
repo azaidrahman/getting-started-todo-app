@@ -44,6 +44,7 @@ async function init() {
                 id varchar(36),
                 name varchar(255),
                 completed boolean,
+                priority VARCHAR(20),
                 category ENUM('work', 'personal', 'shopping') NOT NULL DEFAULT '${DEFAULT_CATEGORY}'
             ) DEFAULT CHARSET utf8mb4`,
             (err) => {
@@ -71,6 +72,7 @@ async function getItems() {
                 rows.map((item) =>
                     Object.assign({}, item, {
                         completed: item.completed === 1,
+                        category: normalizeCategory(item.category)
                     }),
                 ),
             );
@@ -86,6 +88,7 @@ async function getItem(id) {
                 rows.map((item) =>
                     Object.assign({}, item, {
                         completed: item.completed === 1,
+                        category: normalizeCategory(item.category)
                     }),
                 )[0],
             );
@@ -96,8 +99,8 @@ async function getItem(id) {
 async function storeItem(item) {
     return new Promise((acc, rej) => {
         pool.query(
-            'INSERT INTO todo_items (id, name, completed, category) VALUES (?, ?, ?, ?)',
-            [item.id, item.name, item.completed ? 1 : 0, normalizeCategory(item.category)],
+            'INSERT INTO todo_items (id, name, completed, priority, category) VALUES (?, ?, ?, ?, ?)',
+            [item.id, item.name, item.completed ? 1 : 0, item.priority, normalizeCategory(item.category)],
             (err) => {
                 if (err) return rej(err);
                 acc();

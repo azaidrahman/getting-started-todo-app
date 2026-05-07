@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
         ...req.body,
         priority: VALID_PRIORITIES.includes(req.body.priority) ? req.body.priority : 'medium'
     };
-    await db.updateItem(req.params.id, updates, catego);
+    await db.updateItem(req.params.id, updates);
     const item = await db.getItem(req.params.id);
     res.send(item);
 };

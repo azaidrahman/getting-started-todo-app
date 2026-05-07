@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import { CATEGORIES, DEFAULT_CATEGORY } from '../categories';
+
 export function AddItemForm({ onNewItem }) {
     const [newItem, setNewItem] = useState('');
     const [category, setCategory] = useState(DEFAULT_CATEGORY);
@@ -16,7 +15,7 @@ export function AddItemForm({ onNewItem }) {
 
         const options = {
             method: 'POST',
-            body: JSON.stringify({ name: newItem, category }),
+            body: JSON.stringify({ name: newItem, category, priority }),
             headers: { 'Content-Type': 'application/json' },
         };
 
@@ -27,7 +26,9 @@ export function AddItemForm({ onNewItem }) {
                 setSubmitting(false);
                 setNewItem('');
                 setCategory(DEFAULT_CATEGORY);
-            });
+                setPriority('');
+            })
+            .catch(() => setSubmitting(false))
     };
 
     return (

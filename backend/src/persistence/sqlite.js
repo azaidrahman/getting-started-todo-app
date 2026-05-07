@@ -26,6 +26,7 @@ function init() {
                 `CREATE TABLE IF NOT EXISTS todo_items (
                     id varchar(36),
                     name varchar(255),
+                    priority varchar(20),
                     completed boolean,
                     category text NOT NULL DEFAULT '${DEFAULT_CATEGORY}'
                         CHECK(category IN (${CATEGORIES.map((value) => `'${value}'`).join(', ')}))
@@ -103,8 +104,8 @@ async function getItem(id) {
 async function storeItem(item) {
     return new Promise((acc, rej) => {
         db.run(
-            'INSERT INTO todo_items (id, name, completed, category) VALUES (?, ?, ?, ?)',
-            [item.id, item.name, item.completed ? 1 : 0, normalizeCategory(item.category),],
+            'INSERT INTO todo_items (id, name, completed, priority, category) VALUES (?, ?, ?, ?, ?)',
+            [item.id, item.name, item.completed ? 1 : 0, item.priority, normalizeCategory(item.category),],
             (err) => {
                 if (err) return rej(err);
                 acc();
@@ -116,8 +117,8 @@ async function storeItem(item) {
 async function updateItem(id, item) {
     return new Promise((acc, rej) => {
         db.run(
-            'UPDATE todo_items SET name=?, completed=? WHERE id = ?',
-            [item.name, item.completed ? 1 : 0, normalizeCategory(item.category), id],
+            'UPDATE todo_items SET name=?, category = ?, completed=? WHERE id = ?',
+            [item.name, normalizeCategory(item.category), item.completed ? 1 : 0, id],
             (err) => {
                 if (err) return rej(err);
                 acc();

@@ -41,11 +41,11 @@ export function TodoListCard() {
         [items],
     );
 
+    if (items === null) return 'Loading...';
+
     const filteredItems = items.filter(
         (item) => categoryFilter === 'all' || item.category === categoryFilter,
     );
-
-    if (items === null) return 'Loading...';
 
     return (
         <>

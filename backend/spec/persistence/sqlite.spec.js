@@ -12,6 +12,7 @@ const ITEM = {
     name: 'Test',
     completed: false,
     priority: 'medium',
+    category: 'personal',
 };
 
 beforeEach(() => {
