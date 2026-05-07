@@ -23,7 +23,7 @@ export function SearchSortBar({ search, onSearchChange, sort, onSortChange }) {
                 style={{ maxWidth: '180px' }}
             >
 
-                <option value="created">Date Created</option>
+                <option value="category">Category</option>
                 <option value="priority">Priority</option>
                 <option value="due">Due Date</option>
             </Form.Select>
