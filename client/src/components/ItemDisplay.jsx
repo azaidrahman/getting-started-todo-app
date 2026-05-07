@@ -8,6 +8,19 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import faCheckSquare from '@fortawesome/fontawesome-free-regular/faCheckSquare';
 import faSquare from '@fortawesome/fontawesome-free-regular/faSquare';
 import './ItemDisplay.scss';
+import React from 'react';
+
+const PRIORITY_COLORS = {
+    low: { variant: 'success', label: 'Low' },
+    medium: { variant: 'warning', label: 'Medium' },
+    high: { variant: 'danger', label: 'High' },
+};
+function PriorityBadge({ priority }) {
+    const config = PRIORITY_COLORS[priority] ?? PRIORITY_COLORS.medium;
+    return (
+        <span className={`badge bg-${config.variant}`}>{config.label}</span>
+    );
+}
 import Badge from 'react-bootstrap/Badge';
 
 export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
@@ -15,14 +28,14 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
         fetch(`/api/items/${item.id}`, {
             method: 'PUT',
             body: JSON.stringify({
-                name: item.name,
+                ...item,
                 completed: !item.completed,
                 category: item.category,
             }),
             headers: { 'Content-Type': 'application/json' },
         })
-            .then((r) => r.json())
-            .then(onItemUpdate);
+            .then(r => r.json())
+            .then(updatedItem => onItemUpdate(updatedItem));
     };
 
     const removeItem = () => {
@@ -50,13 +63,13 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                             icon={item.completed ? faCheckSquare : faSquare}
                         />
                         <i
-                            className={`far ${
-                                item.completed ? 'fa-check-square' : 'fa-square'
-                            }`}
+                            className={`far ${item.completed ? 'fa-check-square' : 'fa-square'
+                                }`}
                         />
                     </Button>
                 </Col>
                 <Col xs={8} className="name">
+                    <PriorityBadge priority={item.priority} />
                     <div>{item.name}</div>
                     <Badge bg="secondary" className="category-badge text-uppercase">
                         {item.category}

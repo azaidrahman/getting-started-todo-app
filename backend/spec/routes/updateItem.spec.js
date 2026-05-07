@@ -23,7 +23,8 @@ test('it updates items correctly', async () => {
     expect(db.updateItem.mock.calls[0][1]).toEqual({
         name: 'New title',
         completed: false,
-        category: 'work',
+        priority: 'medium',
+        category: 'personal'
     });
 
     expect(db.getItem.mock.calls.length).toBe(1);

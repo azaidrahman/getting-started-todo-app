@@ -2,12 +2,13 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
+import { InputGroup, Form, Button } from 'react-bootstrap';
 import { CATEGORIES, DEFAULT_CATEGORY } from '../categories';
 export function AddItemForm({ onNewItem }) {
     const [newItem, setNewItem] = useState('');
     const [category, setCategory] = useState(DEFAULT_CATEGORY);
     const [submitting, setSubmitting] = useState(false);
+    const [priority, setPriority] = useState('medium');
 
     const submitNewItem = (e) => {
         e.preventDefault();
@@ -20,8 +21,8 @@ export function AddItemForm({ onNewItem }) {
         };
 
         fetch('/api/items', options)
-            .then((r) => r.json())
-            .then((item) => {
+            .then(r => r.json())
+            .then(item => {
                 onNewItem(item);
                 setSubmitting(false);
                 setNewItem('');
