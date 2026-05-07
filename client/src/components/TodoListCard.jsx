@@ -66,7 +66,7 @@ export function TodoListCard() {
                 </Form.Select>
             </Form.Group>
             {items.length === 0 && (
-                <p className="text-center">No items yet! Add one above!</p>
+                <p className="text-center">No items. Add one above!</p>
             )}
 
             {items.length > 0 && filteredItems.length === 0 && (
