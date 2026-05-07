@@ -6,7 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { CATEGORIES, DEFAULT_CATEGORY } from '../categories';
 export function AddItemForm({ onNewItem }) {
     const [newItem, setNewItem] = useState('');
-    const [submitting, setSubmitting] = useState(false);
+    const [category, setCategory] = useState(DEFAULT_CATEGORY);
     const [submitting, setSubmitting] = useState(false);
 
     const submitNewItem = (e) => {
