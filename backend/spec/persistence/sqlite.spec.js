@@ -6,6 +6,7 @@ const ITEM = {
     id: '7aef3d7c-d301-4846-8358-2a91ec9d6be3',
     name: 'Test',
     completed: false,
+    category: 'personal',
 };
 
 beforeEach(() => {
@@ -38,10 +39,11 @@ test('it can update an existing item', async () => {
 
     await db.updateItem(
         ITEM.id,
-        Object.assign({}, ITEM, { completed: !ITEM.completed }),
+        Object.assign({}, ITEM, { completed: !ITEM.completed, category: 'shopping', }),
     );
 
     const items = await db.getItems();
+    expect(items[0].category).toBe('shopping');
     expect(items.length).toBe(1);
     expect(items[0].completed).toBe(!ITEM.completed);
 });

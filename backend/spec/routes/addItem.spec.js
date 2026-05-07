@@ -14,14 +14,14 @@ jest.mock('../../src/persistence', () => ({
 test('it stores item correctly', async () => {
     const id = 'something-not-a-uuid';
     const name = 'A sample item';
-    const req = { body: { name } };
+    const req = { body: { name: 'A sample item', category: 'shopping' } };
     const res = { send: jest.fn() };
 
     uuid.mockReturnValue(id);
 
     await addItem(req, res);
 
-    const expectedItem = { id, name, completed: false };
+    const expectedItem = { id, name, completed: false, category: 'shopping'};
 
     expect(db.storeItem.mock.calls.length).toBe(1);
     expect(db.storeItem.mock.calls[0][0]).toEqual(expectedItem);
