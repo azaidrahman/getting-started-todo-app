@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-
+import { CATEGORIES, DEFAULT_CATEGORY } from '../categories';
 export function AddItemForm({ onNewItem }) {
     const [newItem, setNewItem] = useState('');
+    const [submitting, setSubmitting] = useState(false);
     const [submitting, setSubmitting] = useState(false);
 
     const submitNewItem = (e) => {
@@ -14,7 +15,7 @@ export function AddItemForm({ onNewItem }) {
 
         const options = {
             method: 'POST',
-            body: JSON.stringify({ name: newItem }),
+            body: JSON.stringify({ name: newItem, category }),
             headers: { 'Content-Type': 'application/json' },
         };
 
@@ -24,6 +25,7 @@ export function AddItemForm({ onNewItem }) {
                 onNewItem(item);
                 setSubmitting(false);
                 setNewItem('');
+                setCategory(DEFAULT_CATEGORY);
             });
     };
 
@@ -37,6 +39,17 @@ export function AddItemForm({ onNewItem }) {
                     placeholder="New Item"
                     aria-label="New item"
                 />
+                <Form.Select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    aria-label="Select category"
+                >
+                    {CATEGORIES.map((categoryOption) => (
+                        <option key={categoryOption} value={categoryOption}>
+                            {categoryOption.charAt(0).toUpperCase() + categoryOption.slice(1)}
+                        </option>
+                    ))}
+                </Form.Select>
                 <Button
                     type="submit"
                     variant="success"
