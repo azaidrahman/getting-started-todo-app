@@ -50,7 +50,7 @@ export function AddItemForm({ onNewItem }) {
                 onChange={e => setNewItem(e.target.value)}
                 onKeyUp={e => { if (e.key === 'Enter') submitNewItem(); }}
             />
-            //add due date
+            
             <Form.Control
                 type='date'
                 value={dueDate}
