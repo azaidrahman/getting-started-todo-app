@@ -49,7 +49,20 @@ async function init() {
             ) DEFAULT CHARSET utf8mb4`,
             (err) => {
                 if (err) return rej(err);
-                acc();
+                pool.query(
+                    `ALTER TABLE todo_items ADD COLUMN priority VARCHAR(20) DEFAULT 'medium'`,
+                    (err2) => {
+                        // 1060 = duplicate column — column already exists, which is fine
+                        if (err2 && err2.errno !== 1060) return rej(err2);
+                        pool.query(
+                            `ALTER TABLE todo_items ADD COLUMN category ENUM('work', 'personal', 'shopping') NOT NULL DEFAULT '${DEFAULT_CATEGORY}'`,
+                            (err3) => {
+                                if (err3 && err3.errno !== 1060) return rej(err3);
+                                acc();
+                            },
+                        );
+                    },
+                );
             },
         );
     });
