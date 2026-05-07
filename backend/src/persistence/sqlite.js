@@ -18,7 +18,7 @@ function init() {
                 console.log(`Using sqlite database at ${location}`);
 
             db.run(
-                'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean, priority varchar(10))',
+                'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean, priority varchar(10),due_date varchar(10))',
                 (err, result) => {
                     if (err) return rej(err);
                     acc();
@@ -70,21 +70,21 @@ async function getItem(id) {
 async function storeItem(item) {
     return new Promise((acc, rej) => {
         db.run(
-            'INSERT INTO todo_items (id, name, completed,priority) VALUES (?, ?, ?,?)',
-            [item.id, item.name, item.completed ? 1 : 0, item.priority],
+            'INSERT INTO todo_items (id, name, completed,priority,due_date) VALUES (?, ?, ?,?,?)',
+            [item.id, item.name, item.completed ? 1 : 0, item.priority, item.due_date || null],
             (err) => {
                 if (err) return rej(err);
                 acc();
             },
         );
     });
-}
+} //add due date here
 
 async function updateItem(id, item) {
     return new Promise((acc, rej) => {
         db.run(
-            'UPDATE todo_items SET name=?, completed=?, priority=? WHERE id = ?',
-            [item.name, item.completed ? 1 : 0, item.priority, id],
+            'UPDATE todo_items SET name=?, completed=?, priority=?, due_date=? WHERE id = ?',
+            [item.name, item.completed ? 1 : 0, item.priority, item.due_date || null, id],
             (err) => {
                 if (err) return rej(err);
                 acc();

@@ -24,7 +24,7 @@ test('it stores item with default priority when none is provided', async () => {
 
     await addItem(req, res);
 
-    const expectedItem = { id: ID, name: NAME, completed: false, priority: 'medium' };
+    const expectedItem = { id: ID, name: NAME, completed: false, priority: 'medium', due_date: null };
     expect(db.storeItem).toHaveBeenCalledWith(expectedItem);
     expect(res.send).toHaveBeenCalledWith(expectedItem);
 });
@@ -35,7 +35,7 @@ test('it stores item with the provided valid priority', async () => {
 
     await addItem(req, res);
 
-    const expectedItem = { id: ID, name: NAME, completed: false, priority: 'high' };
+    const expectedItem = { id: ID, name: NAME, completed: false, priority: 'high', due_date: null };
     expect(db.storeItem).toHaveBeenCalledWith(expectedItem);
     expect(res.send).toHaveBeenCalledWith(expectedItem);
 });
@@ -48,5 +48,26 @@ test('it defaults to medium when an invalid priority is provided', async () => {
 
     expect(db.storeItem).toHaveBeenCalledWith(
         expect.objectContaining({ priority: 'medium' }),
+    );
+});
+
+test('it stores item with a valid due_date', async () => {
+    const req = { body: { name: NAME, due_date: '2026-10-01' } };
+    const res = { send: jest.fn() };
+
+    await addItem(req, res);
+    expect(db.storeItem).toHaveBeenCalledWith(
+        expect.objectContaining({ due_date: '2026-10-01' })
+    );
+});
+
+test('it stores null due_date when value is invalid', async () => {
+    const req = { body: { name: NAME, due_date: 'not-a-date' } };
+    const res = { send: jest.fn() };
+
+    await addItem(req, res);
+
+    expect(db.storeItem).toHaveBeenCalledWith(
+        expect.objectContaining({ due_date: null }),
     );
 });
