@@ -72,7 +72,7 @@ export function TodoListCard() {
             // If the user selected "priority" sort
             if (sort === 'priority') {
                 // set number 1 for top priority and lower number for low priority
-                const rank = { high: 1, med: 2, low: 3 };
+                const rank = { high: 1, medium: 2, low: 3 };
                 return (rank[a.priority] || 4) - (rank[b.priority] || 4);
             }
             // If the user selected "due" sort
