@@ -39,7 +39,7 @@ async function init() {
 
     return new Promise((acc, rej) => {
         pool.query(
-            "CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean, priority varchar(10) DEFAULT 'medium')",
+            "CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean, priority varchar(10) DEFAULT 'medium',due_date varchar(10) DEFAULT NULL)", //include date here,
             (err) => {
                 if (err) return rej(err);
 
@@ -92,8 +92,8 @@ async function getItem(id) {
 async function storeItem(item) {
     return new Promise((acc, rej) => {
         pool.query(
-            'INSERT INTO todo_items (id, name, completed,priority) VALUES (?, ?, ?,?)',
-            [item.id, item.name, item.completed ? 1 : 0, item.priority],
+            'INSERT INTO todo_items (id, name, completed,priority,due_date) VALUES (?, ?, ?,?,?)',
+            [item.id, item.name, item.completed ? 1 : 0, item.priority, item.due_date || null],
             (err) => {
                 if (err) return rej(err);
                 acc();
@@ -105,8 +105,8 @@ async function storeItem(item) {
 async function updateItem(id, item) {
     return new Promise((acc, rej) => {
         pool.query(
-            'UPDATE todo_items SET name=?, completed=?, priority=? WHERE id=?',
-            [item.name, item.completed ? 1 : 0, item.priority, id],
+            'UPDATE todo_items SET name=?, completed=?, priority=?,due_date=? WHERE id=?',
+            [item.name, item.completed ? 1 : 0, item.priority, item.due_date || null, id], //add here
             (err) => {
                 if (err) return rej(err);
                 acc();
