@@ -14,7 +14,7 @@ export function AddItemForm({ onNewItem }) {
 
         const options = {
             method: 'POST',
-            body: JSON.stringify({ name: newItem, priority, due_date: dueDate || null }),
+            body: JSON.stringify({ name: newItem, priority, due_date: dueDate || null }),//due date included
             headers: { 'Content-Type': 'application/json' },
         };
 
@@ -25,12 +25,13 @@ export function AddItemForm({ onNewItem }) {
                 setSubmitting(false);
                 setNewItem('');
                 setPriority('medium');
-                setDueDate('');
+                setDueDate(''); //duedate included
             });
     };
 
     return (
         <InputGroup className="mb-3">
+            {/* NEW: priority selector */}
             <Form.Select
                 value={priority}
                 onChange={e => setPriority(e.target.value)}
@@ -49,13 +50,13 @@ export function AddItemForm({ onNewItem }) {
                 onChange={e => setNewItem(e.target.value)}
                 onKeyUp={e => { if (e.key === 'Enter') submitNewItem(); }}
             />
-
+            //add due date
             <Form.Control
-                type="date"
+                type='date'
                 value={dueDate}
                 onChange={e => setDueDate(e.target.value)}
-                aria-label="Due date"
-                style={{ maxWidth: '160px' }}
+                aria-label='Due Date'
+                style={{ maxWidth: '140px' }}
             />
 
             <Button
