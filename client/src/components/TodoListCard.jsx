@@ -6,7 +6,7 @@ import { SearchSortBar } from './SearchSortBar'; //import search bar component
 export function TodoListCard() {
     const [items, setItems] = useState(null);
     const [search, setSearch] = useState('');
-    const [sort, setSort] = useState('created');
+    const [sort, setSort] = useState('priority');
 
 
     useEffect(() => {
