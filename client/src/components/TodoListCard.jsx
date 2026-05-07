@@ -6,7 +6,7 @@ import { SearchSortBar } from './SearchSortBar'; //import search bar component
 export function TodoListCard() {
     const [items, setItems] = useState(null);
     const [search, setSearch] = useState('');
-    const [sort, setSort] = useState('priority');
+    const [sort, setSort] = useState('priority'); // every refresh set sort as priority
 
 
     useEffect(() => {
@@ -67,13 +67,13 @@ export function TodoListCard() {
             if (sort === 'category') {
                 const rank = { personal: 1, shopping: 2, work: 3 };
                 // Get the rank for each item; 4 if category is missing
-                return (rank[a.category] || 4) - (rank[b.category] || 4);
+                return (rank[a.category?.toLowerCase().trim()] || 4) - (rank[b.category?.toLowerCase().trim()] || 4);
             }
             // If the user selected "priority" sort
             if (sort === 'priority') {
                 // set number 1 for top priority and lower number for low priority
                 const rank = { high: 1, medium: 2, low: 3 };
-                return (rank[a.priority] || 4) - (rank[b.priority] || 4);
+                return (rank[a.priority?.toLowerCase().trim()] || 4) - (rank[b.priority?.toLowerCase().trim()] || 4);
             }
             // If the user selected "due" sort
             if (sort === 'due') {
