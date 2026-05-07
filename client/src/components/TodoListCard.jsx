@@ -68,14 +68,11 @@ export function TodoListCard() {
             {items.length === 0 && (
                 <p className="text-center">No items yet! Add one above!</p>
             )}
-            {items.map((item) => (
-                <ItemDisplay
-                    key={item.id}
-                    item={item}
-                    onItemUpdate={onItemUpdate}
-                    onItemRemoval={onItemRemoval}
-                />
-            ))}
+
+            {items.length > 0 && filteredItems.length === 0 && (
+                <p className="text-center">No items match this category.</p>
+            )}
+            
             {filteredItems.map((item) => (
                 <ItemDisplay
                     key={item.id}
