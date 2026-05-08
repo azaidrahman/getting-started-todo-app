@@ -3,17 +3,14 @@ import PropTypes from 'prop-types';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import { CATEGORIES, DEFAULT_CATEGORY } from '../categories';
 import './AddNewItemForm.scss'
-
-const PRIORITY_SYMBOLS = { low: '🟢', medium: '🟡', high: '⚠️' };
-
-const CATEGORY_SYMBOLS = { work: '💼', personal: '👤', shopping: '🛍️' };
-
 export function AddItemForm({ onNewItem }) {
     const [newItem, setNewItem] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [priority, setPriority] = useState('medium');
     const [category, setCategory] = useState(DEFAULT_CATEGORY);
     const [dueDate, setDueDate] = useState('');
+    const PRIORITY_SYMBOLS = { low: '🟢', medium: '🟡', high: '⚠️' };
+    const CATEGORY_SYMBOLS = { work: '💼', personal: '👤', shopping: '🛍️' };
 
     const submitNewItem = (e) => {
         e.preventDefault();
