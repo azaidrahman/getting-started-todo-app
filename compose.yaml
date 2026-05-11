@@ -98,8 +98,6 @@ services:
     image: mysql:9.3
     volumes:
       - todo-mysql-data:/var/lib/mysql
-    env_file:
-      - .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
