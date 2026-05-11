@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Form from 'react-bootstrap/Form';
 import { AddItemForm } from './AddNewItemForm';
 import { ItemDisplay } from './ItemDisplay';
-import { SearchSortBar } from './SearchSortBar'; //import search bar component
+import { SearchSortBar } from './SearchSortBar';
+import { CATEGORIES } from '../categories';
 
 export function TodoListCard() {
     const [items, setItems] = useState(null);
     const [search, setSearch] = useState('');
-    const [sort, setSort] = useState('priority'); // every refresh set sort as priority
+    const [sort, setSort] = useState('priority');
+    const [categoryFilter, setCategoryFilter] = useState('all');
 
 
     useEffect(() => {
@@ -35,7 +38,7 @@ export function TodoListCard() {
         [],
     );
 
-    // useCallbaack memorise the function for removing an item
+    // useCallback memorise the function for removing an item
     const onItemRemoval = useCallback(
         // Accept the item that should be removed
         (item) => {
@@ -50,6 +53,10 @@ export function TodoListCard() {
         if (!items) return [];
 
         let result = [...items];
+
+        if (categoryFilter !== 'all') {
+            result = result.filter(item => item.category === categoryFilter);
+        }
 
         // If user typed something in the search bar (non-empty string)...
         if (search) {
@@ -91,7 +98,7 @@ export function TodoListCard() {
         return result;
     }, 
     
-    [items, search, sort]); 
+    [items, search, sort, categoryFilter]);
 
     if (items === null) return 'Loading...';
 
@@ -106,13 +113,28 @@ export function TodoListCard() {
                 sort={sort}
                 onSortChange={setSort}
             />
-            
-            {/* Show a message when there are no items to display */}
+
+            <Form.Select
+                value={categoryFilter}
+                onChange={e => setCategoryFilter(e.target.value)}
+                className="mb-3"
+                aria-label="Filter by category"
+            >
+                <option value="all">All categories</option>
+                {CATEGORIES.map(c => (
+                    <option key={c} value={c}>
+                        {c.charAt(0).toUpperCase() + c.slice(1)}
+                    </option>
+                ))}
+            </Form.Select>
+
             {displayedItems.length === 0 && (
                 <p className="text-center">
-                    {/* Show different message depending on whether the user searched */}
-                    {/* If search is empty, then there are no items in the db */}
-                    {search ? 'No items match your search.' : 'No items yet! Add one above!'}
+                    {categoryFilter !== 'all'
+                        ? 'No items match this category.'
+                        : search
+                        ? 'No items match your search.'
+                        : 'No items yet! Add one above!'}
                 </p>
             )}
 
