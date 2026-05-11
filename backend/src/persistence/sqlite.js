@@ -102,9 +102,16 @@ async function removeItem(id) {
     });
 }
 
+async function ping() {
+    return new Promise((acc, rej) => {
+        db.get('SELECT 1', (err) => (err ? rej(err) : acc()));
+    });
+}
+
 module.exports = {
     init,
     teardown,
+    ping,
     getItems,
     getItem,
     storeItem,

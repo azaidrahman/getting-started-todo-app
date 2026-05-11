@@ -10,6 +10,15 @@ const deleteItem = require('./routes/deleteItem');
 app.use(express.json());
 app.use(express.static(__dirname + '/static'));
 
+app.get('/api/healthz', async (req, res) => {
+    try {
+        await db.ping();
+        res.status(200).json({ status: 'ok' });
+    } catch (err) {
+        res.status(503).json({ status: 'unhealthy' });
+    }
+});
+
 app.get('/api/greeting', getGreeting);
 app.get('/api/items', getItems);
 app.post('/api/items', addItem);

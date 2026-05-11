@@ -124,9 +124,16 @@ async function removeItem(id) {
     });
 }
 
+async function ping() {
+    return new Promise((acc, rej) => {
+        pool.query('SELECT 1', (err) => (err ? rej(err) : acc()));
+    });
+}
+
 module.exports = {
     init,
     teardown,
+    ping,
     getItems,
     getItem,
     storeItem,
